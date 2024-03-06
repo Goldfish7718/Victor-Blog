@@ -1,0 +1,18 @@
+{
+  "name": "victorblog-server",
+  "version": "1.0.0",
+  "description": "API for Victor Blog",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon server.js",
+    "start": "node server.js"
+  },
+  "author": "Tejas Nanoti",
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.3",
+    "pg": "^8.11.3"
+  }
+}
