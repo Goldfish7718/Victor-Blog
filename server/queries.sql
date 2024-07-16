@@ -3,7 +3,7 @@ SELECT * FROM blogs
 
 -- CREATING BLOGS
 INSERT INTO blogs (authorName, blog)
-VALUES ('Tejas Nanoti', 'Today I saw my nigga and now imma do it my way')
+VALUES ('Tejas Nanoti', 'Hello World')
 
 -- DELETE BLOG
 DELETE FROM blogs
