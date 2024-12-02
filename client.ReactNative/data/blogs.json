@@ -1,0 +1,53 @@
+[
+    {
+      "id": 1,
+      "blog": "Understanding JavaScript Closures",
+      "author": "Alice Johnson"
+    },
+    {
+      "id": 2,
+      "blog": "A Guide to React Hooks",
+      "author": "Bob Smith"
+    },
+    {
+      "id": 3,
+      "blog": "Exploring Prisma ORM for Databases",
+      "author": "Charlie Brown"
+    },
+    {
+      "id": 4,
+      "blog": "CSS Tricks for Responsive Design",
+      "author": "Dana White"
+    },
+    {
+      "id": 5,
+      "blog": "Building a REST API with Node.js",
+      "author": "Evan Wright"
+    },
+    {
+      "id": 6,
+      "blog": "Getting Started with TypeScript",
+      "author": "Fiona Green"
+    },
+    {
+      "id": 7,
+      "blog": "Debugging Tips for JavaScript Developers",
+      "author": "George Harris"
+    },
+    {
+      "id": 8,
+      "blog": "State Management in React: Context vs Redux",
+      "author": "Hannah Lee"
+    },
+    {
+      "id": 9,
+      "blog": "Top 10 VSCode Extensions for Developers",
+      "author": "Isaac Newton"
+    },
+    {
+      "id": 10,
+      "blog": "Deploying Applications with Docker",
+      "author": "Jack Daniels"
+    }
+  ]
+  

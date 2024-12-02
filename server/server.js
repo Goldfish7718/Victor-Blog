@@ -15,7 +15,7 @@ app.listen(3000, async () => {
 app.get("/", async (req, res) => {
   try {
     const blogs = await prisma.blog.findMany();
-    res.json(blogs).status(200);
+    res.status(200).json({ blogs });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Internal Server Error" });
@@ -42,8 +42,9 @@ app.delete("/delete/:id", async (req, res) => {
     const { id } = req.params;
 
     await prisma.blog.delete({ where: { id: parseInt(id) } });
+    const blogs = await prisma.blog.findMany();
 
-    res.status(200).json({ message: "Blog Deleted Successfully" });
+    res.status(200).json({ blogs });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Internal Server Error" });
