@@ -11,6 +11,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
+import { useRouter } from "expo-router";
 
 interface Blog {
   id: number;
@@ -20,6 +21,8 @@ interface Blog {
 
 export default function Index() {
   const [blogs, setBlogs] = useState<Blog[]>([]);
+
+  const router = useRouter();
 
   const fetchBlogs = async () => {
     try {
@@ -49,7 +52,7 @@ export default function Index() {
     <SafeAreaView style={styles.parentContainer}>
       <View style={styles.headerContainer}>
         <Text style={styles.title}>Blogs</Text>
-        <Pressable style={styles.button}>
+        <Pressable style={styles.button} onPress={() => router.push("/new")}>
           <Text>New Blog</Text>
           <AntDesign name="plus" size={18} color="black" />
         </Pressable>

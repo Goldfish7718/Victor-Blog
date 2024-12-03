@@ -10,6 +10,7 @@ export default function RootLayout() {
           headerTintColor: "white",
         }}>
         <Stack.Screen name="index" options={{ headerTitle: "Victor Blog" }} />
+        <Stack.Screen name="new" options={{ headerTitle: "New Blog" }} />
       </Stack>
     </SafeAreaProvider>
   );
