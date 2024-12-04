@@ -8,10 +8,11 @@ import {
 } from "react-native";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import axios from "axios";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import { useRouter } from "expo-router";
+import { useFocusEffect } from "@react-navigation/native";
 
 interface Blog {
   id: number;
@@ -44,9 +45,11 @@ export default function Index() {
     }
   };
 
-  useEffect(() => {
-    fetchBlogs();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      fetchBlogs();
+    }, [])
+  );
 
   return (
     <SafeAreaView style={styles.parentContainer}>
@@ -71,7 +74,8 @@ export default function Index() {
 
             <View style={styles.blogCardFooter}>
               <Pressable
-                style={[styles.button, { padding: 10, borderRadius: 10 }]}>
+                style={[styles.button, { padding: 10, borderRadius: 10 }]}
+                onPress={() => router.push(`/blogs/${item.id}`)}>
                 <Text>Edit</Text>
                 <FontAwesome5 name="pencil-alt" size={18} color="black" />
               </Pressable>

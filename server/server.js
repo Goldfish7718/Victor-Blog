@@ -14,8 +14,25 @@ app.listen(3000, async () => {
 
 app.get("/", async (req, res) => {
   try {
-    const blogs = await prisma.blog.findMany();
+    const blogs = await prisma.blog.findMany({
+      orderBy: {
+        id: "asc",
+      },
+    });
+
     res.status(200).json({ blogs });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+});
+
+app.get("/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const blog = await prisma.blog.findUnique({ where: { id: parseInt(id) } });
+
+    res.status(200).json({ blog });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Internal Server Error" });

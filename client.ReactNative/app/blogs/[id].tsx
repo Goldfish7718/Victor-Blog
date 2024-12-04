@@ -1,19 +1,32 @@
 import axios from "axios";
-import { useRouter } from "expo-router";
-import React, { useState } from "react";
+import { useLocalSearchParams, useRouter } from "expo-router";
+import React, { useEffect, useState } from "react";
 import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 
-const NewBlog = () => {
+const EditBlog = () => {
+  const { id } = useLocalSearchParams();
   const [authorname, setAuthorname] = useState("");
   const [blog, setBlog] = useState("");
 
   const router = useRouter();
 
+  const fetchBlog = async () => {
+    try {
+      const res = await axios.get(`${process.env.EXPO_PUBLIC_API_URL}/${id}`);
+      const { blog, authorname } = res.data.blog;
+
+      setBlog(blog);
+      setAuthorname(authorname);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const saveBlog = async () => {
     try {
-      await axios.post(`${process.env.EXPO_PUBLIC_API_URL}/new`, {
-        authorname,
+      await axios.put(`${process.env.EXPO_PUBLIC_API_URL}/update/${id}`, {
         blog,
+        authorname,
       });
 
       router.back();
@@ -22,14 +35,13 @@ const NewBlog = () => {
     }
   };
 
-  const clearBlog = () => {
-    setAuthorname("");
-    setBlog("");
-  };
+  useEffect(() => {
+    fetchBlog();
+  }, []);
 
   return (
     <View style={styles.parentContainer}>
-      <Text style={styles.headerTitle}>New Blog</Text>
+      <Text style={styles.headerTitle}>Edit Blog</Text>
 
       <View style={styles.main}>
         <TextInput
@@ -52,9 +64,6 @@ const NewBlog = () => {
       <View style={styles.actions}>
         <Pressable style={styles.button} onPress={saveBlog}>
           <Text style={{ color: "blue", fontWeight: "700" }}>SAVE</Text>
-        </Pressable>
-        <Pressable style={styles.button} onPress={clearBlog}>
-          <Text style={{ color: "red", fontWeight: "700" }}>CLEAR</Text>
         </Pressable>
       </View>
     </View>
@@ -92,4 +101,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default NewBlog;
+export default EditBlog;

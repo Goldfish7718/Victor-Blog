@@ -11,6 +11,10 @@ export default function RootLayout() {
         }}>
         <Stack.Screen name="index" options={{ headerTitle: "Victor Blog" }} />
         <Stack.Screen name="new" options={{ headerTitle: "New Blog" }} />
+        <Stack.Screen
+          name="blogs/[id]"
+          options={{ headerTitle: "Edit Blog" }}
+        />
       </Stack>
     </SafeAreaProvider>
   );
