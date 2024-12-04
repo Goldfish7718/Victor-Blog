@@ -1,18 +1,15 @@
-import express from "express";
-import cors from "cors";
 import { PrismaClient } from "@prisma/client";
+import { Hono } from "hono";
+import { cors } from "hono/cors";
+import { serve } from "@hono/node-server";
 
-const app = express();
+const app = new Hono();
 const prisma = new PrismaClient();
+const port = 3000;
 
-app.use(express.json());
-app.use(cors());
+app.use("/*", cors());
 
-app.listen(3000, async () => {
-  console.log("Server started on port 3000");
-});
-
-app.get("/", async (req, res) => {
+app.get("/", async (ctx) => {
   try {
     const blogs = await prisma.blog.findMany({
       orderBy: {
@@ -20,67 +17,77 @@ app.get("/", async (req, res) => {
       },
     });
 
-    res.status(200).json({ blogs });
+    return ctx.json({ blogs });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ message: "Internal Server Error" });
+    return ctx.json({ message: "Internal Server Error" }, 500);
   }
 });
 
-app.get("/:id", async (req, res) => {
+app.get("/:id", async (ctx) => {
   try {
-    const { id } = req.params;
+    const { id } = ctx.req.param();
     const blog = await prisma.blog.findUnique({ where: { id: parseInt(id) } });
 
-    res.status(200).json({ blog });
+    return ctx.json({ blog });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ message: "Internal Server Error" });
+    return ctx.json({ message: "Internal Server Error" }, 500);
   }
 });
 
-app.post("/new", async (req, res) => {
+app.post("/new", async (ctx) => {
   try {
-    const { authorname, blog } = req.body;
+    const { authorname, blog } = await ctx.req.json();
 
     await prisma.blog.create({
       data: { authorname, blog },
     });
 
-    res.status(200).json({ message: "Blog saved Succesfully" });
+    return ctx.json({ message: "Blog saved Succesfully" });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ message: "Internal Server Error" });
+    return ctx.json({ message: "Internal Server Error" }, 500);
   }
 });
 
-app.delete("/delete/:id", async (req, res) => {
+app.delete("/delete/:id", async (ctx) => {
   try {
-    const { id } = req.params;
+    const { id } = ctx.req.param();
 
     await prisma.blog.delete({ where: { id: parseInt(id) } });
-    const blogs = await prisma.blog.findMany();
+    const blogs = await prisma.blog.findMany({
+      orderBy: {
+        id: "asc",
+      },
+    });
 
-    res.status(200).json({ blogs });
+    return ctx.json({ blogs });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ message: "Internal Server Error" });
+    return ctx.json({ message: "Internal Server Error" }, 500);
   }
 });
 
-app.put("/update/:id", async (req, res) => {
+app.put("/update/:id", async (ctx) => {
   try {
-    const { blog, authorname } = req.body;
-    const { id } = req.params;
+    const { blog, authorname } = await ctx.req.json();
+    const { id } = ctx.req.param();
 
     await prisma.blog.update({
       where: { id: parseInt(id) },
       data: { authorname, blog },
     });
 
-    res.status(200).json({ message: "Blog updated succesfully" });
+    return ctx.json({ message: "Blog updated succesfully" });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ message: "Internal Server Error" });
+    return ctx.json({ message: "Internal Server Error" }, 500);
   }
+});
+
+console.log(`Server is running on http://localhost:${port}`);
+serve({
+  fetch: app.fetch,
+  port,
 });
