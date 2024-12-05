@@ -1,11 +1,4 @@
-import {
-  Animated,
-  FlatList,
-  Pressable,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import { FlatList, Pressable, StyleSheet, Text, View } from "react-native";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useCallback, useState } from "react";
@@ -13,6 +6,7 @@ import axios from "axios";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import { useRouter } from "expo-router";
 import { useFocusEffect } from "@react-navigation/native";
+import Animated, { LinearTransition } from "react-native-reanimated";
 
 interface Blog {
   id: number;
@@ -61,10 +55,11 @@ export default function Index() {
         </Pressable>
       </View>
 
-      <FlatList
+      <Animated.FlatList
         data={blogs}
         keyExtractor={(blog) => blog.id.toString()}
         contentContainerStyle={{ flexGrow: 1 }}
+        itemLayoutAnimation={LinearTransition}
         renderItem={({ item }) => (
           <View style={styles.blogCard}>
             <Text>{item.blog}</Text>
